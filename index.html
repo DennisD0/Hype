@@ -16,10 +16,10 @@
     <header class="topbar">
       <a class="brand" href="#">HYPE</a>
       <nav class="nav">
-        <a href="#">Latest</a>
-        <a href="#">Founders</a>
-        <a href="#">Sectors</a>
-        <a href="#">Spotlight</a>
+        <a href="#latest">Latest</a>
+        <a href="#founders">Founders</a>
+        <a href="#sectors">Sectors</a>
+        <a href="#spotlight">Spotlight</a>
       </nav>
       <div class="actions">
         <label class="search">
@@ -40,7 +40,25 @@
         </p>
       </section>
 
-      <section class="stream" id="stream" aria-live="polite"></section>
+      <section id="latest" class="section">
+        <h2 class="section__title">Latest</h2>
+        <div class="stream" id="stream-latest" aria-live="polite"></div>
+      </section>
+
+      <section id="founders" class="section">
+        <h2 class="section__title">Founders</h2>
+        <div class="stream" id="stream-founders" aria-live="polite"></div>
+      </section>
+
+      <section id="sectors" class="section">
+        <h2 class="section__title">Sectors</h2>
+        <div class="stream" id="stream-sectors" aria-live="polite"></div>
+      </section>
+
+      <section id="spotlight" class="section">
+        <h2 class="section__title">Spotlight</h2>
+        <div class="stream" id="stream-spotlight" aria-live="polite"></div>
+      </section>
     </main>
 
     <template id="card-template">

@@ -1,6 +1,11 @@
 // single clean script.js — no duplicated or nested blocks
 
-const stream = document.getElementById("stream");
+const streams = {
+  latest: document.getElementById("stream-latest"),
+  founders: document.getElementById("stream-founders"),
+  sectors: document.getElementById("stream-sectors"),
+  spotlight: document.getElementById("stream-spotlight"),
+};
 const loading = document.getElementById("loading");
 const cardTemplate = document.getElementById("card-template");
 
@@ -138,14 +143,14 @@ function getNextBatch() {
   return batch;
 }
 
-function renderBatch(items) {
+function renderBatch(targetEl, items) {
   if (!Array.isArray(items) || items.length === 0) return;
   const frag = document.createDocumentFragment();
   items.forEach((item, i) => {
     const card = createCard(item, totalRendered + i);
     frag.appendChild(card);
   });
-  stream.appendChild(frag);
+  (targetEl || streams.latest).appendChild(frag);
   totalRendered += items.length;
 }
 
@@ -159,7 +164,7 @@ async function loadMore() {
   showLoading(true);
   await new Promise((r) => setTimeout(r, 650));
   const batch = getNextBatch();
-  renderBatch(batch);
+  renderBatch(streams.latest, batch);
   showLoading(false);
   isLoading = false;
 }
@@ -173,7 +178,12 @@ window.addEventListener("scroll", handleScroll, { passive: true });
 window.addEventListener("resize", handleScroll);
 
 (function init() {
-  renderBatch(getNextBatch());
-  renderBatch(getNextBatch());
+  // Seed static sections
+  renderBatch(streams.founders, getNextBatch());
+  renderBatch(streams.sectors, getNextBatch());
+  renderBatch(streams.spotlight, getNextBatch().slice(0, 6));
+  // Seed latest feed
+  renderBatch(streams.latest, getNextBatch());
+  renderBatch(streams.latest, getNextBatch());
 })();
 
