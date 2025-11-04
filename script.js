@@ -9,6 +9,7 @@ const streams = {
 const loading = document.getElementById("loading");
 const overlay = document.getElementById("overlay");
 const cardTemplate = document.getElementById("card-template");
+const heroImg = document.getElementById("hero-img");
 
 const founders = [
   ["Aaliyah Chen", "Marcos Patel"],
@@ -258,7 +259,17 @@ function handleScroll() {
 window.addEventListener("scroll", handleScroll, { passive: true });
 window.addEventListener("resize", handleScroll);
 
-(function init() {
+(async function init() {
+  // Rotate hero image per visit (client-side)
+  if (heroImg && Array.isArray(photoSet) && photoSet.length) {
+    const count = photoSet.length;
+    const getIdx = window.analytics?.getHeroIndex
+      ? window.analytics.getHeroIndex
+      : async () => (Number(localStorage.getItem('visits') || 0) + 1) % count;
+    const idx = await getIdx(count);
+    heroImg.src = photoSet[idx];
+    if (window.analytics?.recordHeroView) window.analytics.recordHeroView(idx);
+  }
   // Seed static sections
   renderBatch(streams.founders, getNextBatch());
   renderBatch(streams.sectors, getNextBatch());
