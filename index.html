@@ -1,88 +1,78 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
-diff --git a/index.html b/index.html
-new file mode 100644
-index 0000000000000000000000000000000000000000..6fb076c3720bcdd5af1cc1eb500bf3b0864b8b37
---- /dev/null
-+++ b/index.html
-@@ -0,0 +1,78 @@
-+<!DOCTYPE html>
-+<html lang="en">
-+  <head>
-+    <meta charset="UTF-8" />
-+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-+    <title>HYPE</title>
-+    <link rel="preconnect" href="https://fonts.googleapis.com" />
-+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-+    <link
-+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-+      rel="stylesheet"
-+    />
-+    <link rel="stylesheet" href="styles.css" />
-+  </head>
-+  <body>
-+    <header class="topbar">
-+      <a class="brand" href="#">HYPE</a>
-+      <nav class="nav">
-+        <a href="#">Latest</a>
-+        <a href="#">Founders</a>
-+        <a href="#">Sectors</a>
-+        <a href="#">Spotlight</a>
-+      </nav>
-+      <div class="actions">
-+        <label class="search">
-+          <span class="sr-only">Search</span>
-+          <input type="search" placeholder="Search" />
-+        </label>
-+        <button class="cta" type="button">Submit Startup</button>
-+      </div>
-+    </header>
-+
-+    <main>
-+      <section class="intro">
-+        <p class="intro__eyebrow">Daily drop</p>
-+        <h1>Endless signals from rising founders</h1>
-+        <p class="intro__copy">
-+          Scroll through a living moodboard of venture-backed visionaries, styled with the bright
-+          energy of a HYPE cover story built for nonstop inspiration hunting.
-+        </p>
-+      </section>
-+
-+      <section class="stream" id="stream" aria-live="polite"></section>
-+    </main>
-+
-+    <template id="card-template">
-+      <article class="card" role="button" aria-expanded="false" tabindex="0">
-+        <div class="card__inner">
-+          <div class="card__face card__face--front">
-+            <div class="card__media">
-+              <span class="card__category"></span>
-+            </div>
-+            <div class="card__info">
-+              <p class="card__founder"></p>
-+              <h2 class="card__title"></h2>
-+              <p class="card__tagline"></p>
-+              <div class="card__cta" aria-hidden="true">Tap for more</div>
-+            </div>
-+          </div>
-+          <div class="card__face card__face--back">
-+            <div class="card__back">
-+              <h3 class="card__back-title"></h3>
-+              <p class="card__back-copy"></p>
-+              <ul class="card__highlights"></ul>
-+            </div>
-+          </div>
-+        </div>
-+      </article>
-+    </template>
-+
-+    <div class="loading" id="loading" aria-hidden="true">
-+      <span class="loading__spinner"></span>
-+      <p>Loading more stories&hellip;</p>
-+    </div>
-+
-+    <script src="script.js" type="module"></script>
-+  </body>
-+</html>
- 
-EOF
-)
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HYPE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#">HYPE</a>
+      <nav class="nav">
+        <a href="#">Latest</a>
+        <a href="#">Founders</a>
+        <a href="#">Sectors</a>
+        <a href="#">Spotlight</a>
+      </nav>
+      <div class="actions">
+        <label class="search">
+          <span class="sr-only">Search</span>
+          <input type="search" placeholder="Search" />
+        </label>
+        <button class="cta" type="button">Submit Startup</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="intro__eyebrow">Daily drop</p>
+        <h1>Endless signals from rising founders</h1>
+        <p class="intro__copy">
+          Scroll through a living moodboard of venture-backed visionaries, styled with the bright
+          energy of a HYPE cover story built for nonstop inspiration hunting.
+        </p>
+      </section>
+
+      <section class="stream" id="stream" aria-live="polite"></section>
+    </main>
+
+    <template id="card-template">
+      <article class="card" role="button" aria-expanded="false" tabindex="0">
+        <div class="card__inner">
+          <div class="card__face card__face--front">
+            <div class="card__media">
+              <span class="card__category"></span>
+            </div>
+            <div class="card__info">
+              <p class="card__founder"></p>
+              <h2 class="card__title"></h2>
+              <p class="card__tagline"></p>
+              <div class="card__cta" aria-hidden="true">Tap for more</div>
+            </div>
+          </div>
+          <div class="card__face card__face--back">
+            <div class="card__back">
+              <h3 class="card__back-title"></h3>
+              <p class="card__back-copy"></p>
+              <ul class="card__highlights"></ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <div class="loading" id="loading" aria-hidden="true">
+      <span class="loading__spinner"></span>
+      <p>Loading more stories&hellip;</p>
+    </div>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
