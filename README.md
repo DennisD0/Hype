@@ -1,1 +1,1 @@
-Venn - closing the gap between Investors and founders
+Venn - closing the gap between Investors and Founders

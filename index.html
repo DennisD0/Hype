@@ -59,8 +59,8 @@
               <option value="tropic">Neon Tropic</option>
             </select>
           </div>
+          <a class="btn" id="login-link" href="login.html">Log In</a>
           <button class="cta" id="add-startup" type="button">ADD STARTUP</button>
-          <button class="menu" aria-label="Menu" title="Menu">≡</button>
         </div>
         <div class="filterbar__chips" id="filter-chips" role="toolbar" aria-label="Categories"></div>
       </section>
@@ -124,6 +124,26 @@
       <span class="loading__spinner"></span>
       <p>Loading more stories&hellip;</p>
     </div>
+
+    <!-- Chat: floating action button + panel -->
+    <button id="chat-fab" class="chat-fab" type="button" aria-label="Open chat">💬</button>
+    <div id="chat-overlay" class="chat-overlay" aria-hidden="true"></div>
+    <section id="chat" class="chat" aria-hidden="true" aria-label="Community Chat" role="dialog">
+      <header class="chat__header">
+        <h2>Chat</h2>
+        <button id="chat-close" class="chat__close" aria-label="Close chat">×</button>
+      </header>
+      <div class="chat__namebar" id="chat-namebar" hidden>
+        <label for="chat-name">Display name</label>
+        <input id="chat-name" type="text" placeholder="Your name" />
+        <button id="chat-save-name" type="button" class="btn">Save</button>
+      </div>
+      <ol id="chat-messages" class="chat__messages" aria-live="polite"></ol>
+      <form id="chat-form" class="chat__form" autocomplete="off">
+        <input id="chat-input" type="text" placeholder="Type a message" required />
+        <button id="chat-send" class="cta" type="submit">Send</button>
+      </form>
+    </section>
 
     <script src="script.js" type="module"></script>
   </body>

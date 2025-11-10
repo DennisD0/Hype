@@ -1144,3 +1144,137 @@ if (viewButtons && viewButtons.length) {
     btn.addEventListener("click", () => setView(btn.dataset.view));
   });
 }
+
+// --- Chat: lightweight multi-tab chat (BroadcastChannel fallback to storage) ---
+const chat = {
+  el: document.getElementById("chat"),
+  overlay: document.getElementById("chat-overlay"),
+  fab: document.getElementById("chat-fab"),
+  close: document.getElementById("chat-close"),
+  list: document.getElementById("chat-messages"),
+  form: document.getElementById("chat-form"),
+  input: document.getElementById("chat-input"),
+  namebar: document.getElementById("chat-namebar"),
+  nameInput: document.getElementById("chat-name"),
+  saveName: document.getElementById("chat-save-name"),
+  channel: null,
+  me: null,
+  storageKey: "venn_chat_messages",
+  nameKey: "venn_chat_name",
+  bcKey: "venn_chat_broadcast",
+};
+
+function initChat() {
+  if (!chat.fab || !chat.el) return;
+
+  // Setup identity
+  chat.me = localStorage.getItem(chat.nameKey) || "";
+  if (!chat.me && chat.namebar) chat.namebar.hidden = false;
+  if (chat.nameInput && chat.me) chat.nameInput.value = chat.me;
+  if (chat.saveName) chat.saveName.addEventListener("click", () => {
+    const v = (chat.nameInput?.value || "").trim();
+    if (v) {
+      chat.me = v;
+      localStorage.setItem(chat.nameKey, v);
+      if (chat.namebar) chat.namebar.hidden = true;
+      chat.input?.focus();
+    }
+  });
+
+  // Load history
+  try {
+    const raw = localStorage.getItem(chat.storageKey);
+    const msgs = raw ? JSON.parse(raw) : [];
+    renderChatMessages(msgs.slice(-200));
+  } catch {}
+
+  // Channel
+  if ("BroadcastChannel" in window) {
+    chat.channel = new BroadcastChannel("venn-chat");
+    chat.channel.onmessage = (ev) => receiveChat(ev.data);
+  } else {
+    window.addEventListener("storage", (e) => {
+      if (e.key === chat.bcKey && e.newValue) {
+        try { receiveChat(JSON.parse(e.newValue)); } catch {}
+      }
+    });
+  }
+
+  // UI wiring
+  chat.fab.addEventListener("click", openChat);
+  chat.close?.addEventListener("click", closeChat);
+  chat.overlay?.addEventListener("click", closeChat);
+  chat.form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    sendChat((chat.input?.value || "").trim());
+  });
+}
+
+function openChat() {
+  if (!chat.el) return;
+  chat.el.setAttribute("aria-hidden", "false");
+  chat.overlay?.setAttribute("aria-hidden", "false");
+  (chat.input || chat.nameInput)?.focus();
+}
+function closeChat() {
+  if (!chat.el) return;
+  chat.el.setAttribute("aria-hidden", "true");
+  chat.overlay?.setAttribute("aria-hidden", "true");
+}
+
+function renderChatMessages(msgs) {
+  if (!chat.list) return;
+  chat.list.innerHTML = "";
+  const frag = document.createDocumentFragment();
+  msgs.forEach((m) => frag.appendChild(chatMessageNode(m)));
+  chat.list.appendChild(frag);
+  chat.list.scrollTop = chat.list.scrollHeight;
+}
+
+function chatMessageNode(m) {
+  const li = document.createElement("li");
+  li.className = "chat__msg";
+  const meta = document.createElement("div");
+  meta.className = "chat__meta";
+  const date = new Date(m.ts || Date.now());
+  meta.textContent = `${m.name || "Anon"} • ${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+  const text = document.createElement("div");
+  text.className = "chat__text";
+  text.textContent = m.text || "";
+  li.appendChild(meta);
+  li.appendChild(text);
+  return li;
+}
+
+function receiveChat(payload) {
+  if (!payload || !payload.text) return;
+  const raw = localStorage.getItem(chat.storageKey);
+  const msgs = raw ? JSON.parse(raw) : [];
+  msgs.push(payload);
+  localStorage.setItem(chat.storageKey, JSON.stringify(msgs.slice(-500)));
+  // Append to view if open
+  if (chat.list) {
+    chat.list.appendChild(chatMessageNode(payload));
+    chat.list.scrollTop = chat.list.scrollHeight;
+  }
+}
+
+function sendChat(text) {
+  if (!text) return;
+  if (!chat.me) {
+    openChat();
+    if (chat.namebar) chat.namebar.hidden = false;
+    chat.nameInput?.focus();
+    return;
+  }
+  const msg = { id: Math.random().toString(36).slice(2), name: chat.me, text, ts: Date.now() };
+  if (chat.input) chat.input.value = "";
+  receiveChat(msg);
+  if (chat.channel) {
+    chat.channel.postMessage(msg);
+  } else {
+    localStorage.setItem(chat.bcKey, JSON.stringify(msg));
+  }
+}
+
+initChat();
