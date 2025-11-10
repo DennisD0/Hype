@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HYPE</title>
+    <title>Venn</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +14,7 @@
   </head>
   <body class="theme-radiant">
     <header class="topbar">
-      <a class="brand" href="#">HYPE</a>
+      <a class="brand" href="#">Venn</a>
       <nav class="nav">
         <a href="#">Latest</a>
         <a href="#">Founders</a>
@@ -27,8 +27,8 @@
           <input type="search" placeholder="Search" />
         </label>
         <div class="edition">
-          <label for="edition-select">Edition</label>
-          <select id="edition-select" aria-label="Choose a HYPE edition">
+          <label for="edition-select-header">Edition</label>
+          <select id="edition-select-header" aria-label="Choose a Venn edition">
             <option value="radiant" selected>Radiant</option>
             <option value="noir">After Hours</option>
             <option value="tropic">Neon Tropic</option>
@@ -39,11 +39,36 @@
     </header>
 
     <main>
+      <section class="filterbar" aria-label="Filters">
+        <div class="filterbar__row">
+          <a class="brand brand--venn" href="#">Venn</a>
+          <div class="view" role="tablist" aria-label="View">
+            <button class="view__btn" data-view="list" aria-selected="false">LIST</button>
+            <button class="view__btn is-active" data-view="grid" aria-selected="true">GRID</button>
+          </div>
+          <label class="filterbar__search">
+            <span class="sr-only">Search</span>
+            <input id="filter-search" type="search" placeholder="SEARCH" />
+            <button id="filter-go" type="button">GO</button>
+          </label>
+          <div class="edition edition--compact">
+            <label class="sr-only" for="edition-select">Theme</label>
+            <select id="edition-select" aria-label="Choose a Venn edition">
+              <option value="radiant">Radiant</option>
+              <option value="noir">After Hours</option>
+              <option value="tropic">Neon Tropic</option>
+            </select>
+          </div>
+          <button class="cta" id="add-startup" type="button">ADD STARTUP</button>
+          <button class="menu" aria-label="Menu" title="Menu">≡</button>
+        </div>
+        <div class="filterbar__chips" id="filter-chips" role="toolbar" aria-label="Categories"></div>
+      </section>
       <section class="intro">
         <p class="intro__eyebrow" id="intro-eyebrow">Daily drop</p>
         <h1 id="intro-title">Endless signals from rising founders</h1>
         <p class="intro__copy" id="intro-copy">
-          Scroll through a living moodboard of venture-backed visionaries, styled with the bright energy of a HYPE
+          Scroll through a living moodboard of venture-backed visionaries, styled with the bright energy of a Venn
           cover story built for nonstop inspiration hunting.
         </p>
       </section>
@@ -72,6 +97,25 @@
               <ul class="card__highlights"></ul>
             </div>
           </div>
+        </div>
+      </article>
+    </template>
+
+    <!-- List row template for LIST view -->
+    <template id="row-template">
+      <article class="row" tabindex="0">
+        <div class="row__media" aria-hidden="true"></div>
+        <div class="row__col">
+          <div class="row__label">TITLE</div>
+          <h2 class="row__title"></h2>
+        </div>
+        <div class="row__col">
+          <div class="row__label">FOUNDERS</div>
+          <div class="row__founder"></div>
+        </div>
+        <div class="row__col">
+          <div class="row__label">SECTOR</div>
+          <div class="row__category"></div>
         </div>
       </article>
     </template>

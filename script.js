@@ -1,10 +1,11 @@
 const stream = document.getElementById("stream");
 const loading = document.getElementById("loading");
 const cardTemplate = document.getElementById("card-template");
+const rowTemplate = document.getElementById("row-template");
 const introEyebrow = document.getElementById("intro-eyebrow");
 const introTitle = document.getElementById("intro-title");
 const introCopy = document.getElementById("intro-copy");
-const editionSelect = document.getElementById("edition-select");
+const editionSelect = document.getElementById("edition-select") || document.getElementById("edition-select-header");
 
 const editions = {
   radiant: {
@@ -13,7 +14,7 @@ const editions = {
       eyebrow: "Daily drop",
       title: "Endless signals from rising founders",
       copy:
-        "Scroll through a living moodboard of venture-backed visionaries, styled with the bright energy of a HYPE cover story built for nonstop inspiration hunting.",
+        "Scroll through a living moodboard of venture-backed visionaries, styled with the bright energy of a Venn cover story built for nonstop inspiration hunting.",
     },
     founders: [
       ["Aaliyah Chen", "Marcos Patel"],
@@ -668,6 +669,68 @@ function applyTheme(theme) {
   document.body.classList.add(theme);
 }
 
+// Filter bar state and elements
+const filterChips = document.getElementById("filter-chips");
+const filterbarEl = document.querySelector(".filterbar");
+const filterSearch = document.getElementById("filter-search");
+const filterGo = document.getElementById("filter-go");
+const viewButtons = document.querySelectorAll(".view__btn");
+
+let activeDataset = currentEdition.startups;
+let currentCategory = "All";
+let currentQuery = "";
+let currentView = "grid"; // 'grid' | 'list'
+
+function getCategories() {
+  const set = new Set((currentEdition.startups || []).map((s) => s.category));
+  return ["All", ...Array.from(set).sort()];
+}
+
+function buildChips() {
+  if (!filterChips) return;
+  filterChips.innerHTML = "";
+  getCategories().forEach((cat) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chip" + (cat === currentCategory ? " is-active" : "");
+    btn.textContent = cat;
+    btn.addEventListener("click", () => {
+      currentCategory = cat;
+      buildChips();
+      applyFilters();
+    });
+    filterChips.appendChild(btn);
+  });
+}
+
+function applyFilters() {
+  const q = (currentQuery || "").toLowerCase();
+  const src = currentEdition.startups || [];
+  activeDataset = src.filter((s) => {
+    const inCat = currentCategory === "All" || s.category === currentCategory;
+    if (!q) return inCat;
+    const text = `${s.name} ${s.tagline} ${s.description}`.toLowerCase();
+    return inCat && text.includes(q);
+  });
+  resetFeed();
+  renderInitialBatches();
+}
+
+function setView(mode) {
+  if (!stream) return;
+  currentView = mode === "list" ? "list" : "grid";
+  const isList = currentView === "list";
+  stream.classList.toggle("stream--list", isList);
+  viewButtons.forEach((btn) => {
+    const active = btn.dataset.view === currentView;
+    btn.classList.toggle("is-active", active);
+    btn.setAttribute("aria-selected", String(active));
+  });
+  // Re-render in the new view
+  resetFeed();
+  renderInitialBatches();
+}
+
 function updateIntro(intro) {
   if (introEyebrow) {
     introEyebrow.textContent = intro.eyebrow;
@@ -745,7 +808,7 @@ function createCard(data, seed) {
 }
 
 function getNextBatch() {
-  const dataset = currentEdition.startups;
+  const dataset = activeDataset || currentEdition.startups;
   if (!dataset.length) {
     return [];
   }
@@ -758,6 +821,24 @@ function getNextBatch() {
   return batch;
 }
 
+function createRow(data, seed) {
+  const row = rowTemplate.content.firstElementChild.cloneNode(true);
+  const media = row.querySelector(".row__media");
+  const title = row.querySelector(".row__title");
+  const founder = row.querySelector(".row__founder");
+  const category = row.querySelector(".row__category");
+  // Pick a photo
+  const photos = currentEdition.photos || [];
+  if (photos.length) {
+    media.style.backgroundImage = `url(${photos[seed % photos.length]})`;
+  }
+  title.textContent = data.name;
+  const founderSet = currentEdition.founders[seed % currentEdition.founders.length];
+  founder.textContent = founderSet.join(", ");
+  category.textContent = data.category;
+  return row;
+}
+
 function renderBatch() {
   const batch = getNextBatch();
   if (!batch.length) {
@@ -767,8 +848,8 @@ function renderBatch() {
   const fragment = document.createDocumentFragment();
   batch.forEach((startup, idx) => {
     const seed = totalRendered + idx;
-    const card = createCard(startup, seed);
-    fragment.appendChild(card);
+    const node = currentView === "list" ? createRow(startup, seed) : createCard(startup, seed);
+    fragment.appendChild(node);
   });
 
   totalRendered += batch.length;
@@ -802,6 +883,25 @@ function handleScroll() {
   if (scrollPosition >= threshold) {
     loadMore();
   }
+
+  // Auto-hide filter bar on scroll down, show on scroll up/near top
+  if (filterbarEl) {
+    handleHideBarOnScroll();
+  }
+}
+
+let __lastY = window.scrollY || 0;
+function handleHideBarOnScroll() {
+  const y = window.scrollY || 0;
+  const goingDown = y > __lastY;
+  if (y <= 8) {
+    filterbarEl.classList.remove("filterbar--hidden");
+  } else if (goingDown && y > 120) {
+    filterbarEl.classList.add("filterbar--hidden");
+  } else {
+    filterbarEl.classList.remove("filterbar--hidden");
+  }
+  __lastY = y;
 }
 
 function setEdition(key) {
@@ -820,6 +920,12 @@ function setEdition(key) {
 
   applyTheme(currentEdition.theme);
   updateIntro(currentEdition.intro);
+  // Reset filters for new edition
+  activeDataset = currentEdition.startups;
+  currentCategory = "All";
+  currentQuery = "";
+  if (filterSearch) filterSearch.value = "";
+  buildChips();
   resetFeed();
   showLoading(false);
   isLoading = false;
@@ -830,8 +936,13 @@ function setEdition(key) {
 
 applyTheme(currentEdition.theme);
 updateIntro(currentEdition.intro);
+// Initialize filters and view
+activeDataset = currentEdition.startups;
+buildChips();
 renderInitialBatches();
 handleScroll();
+// Ensure correct initial visibility
+if (filterbarEl) handleHideBarOnScroll();
 
 window.addEventListener("scroll", handleScroll, { passive: true });
 window.addEventListener("resize", handleScroll);
@@ -839,5 +950,26 @@ window.addEventListener("resize", handleScroll);
 if (editionSelect) {
   editionSelect.addEventListener("change", (event) => {
     setEdition(event.target.value);
+  });
+}
+
+// Wire up search and view controls
+if (filterGo) {
+  filterGo.addEventListener("click", () => {
+    currentQuery = (filterSearch && filterSearch.value ? filterSearch.value : "").trim();
+    applyFilters();
+  });
+}
+if (filterSearch) {
+  filterSearch.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      currentQuery = (filterSearch.value || "").trim();
+      applyFilters();
+    }
+  });
+}
+if (viewButtons && viewButtons.length) {
+  viewButtons.forEach((btn) => {
+    btn.addEventListener("click", () => setView(btn.dataset.view));
   });
 }
