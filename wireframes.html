@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venn • Experience Wireframes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-pro">
+    <header class="topbar">
+      <a class="brand" href="index.html">Venn</a>
+      <nav class="nav">
+        <a href="#hackathons">Hackathons</a>
+        <a href="#profiles">Profiles</a>
+        <a href="#portfolio">Portfolio</a>
+      </nav>
+      <div class="actions">
+        <label class="search">
+          <span class="sr-only">Search wireframes</span>
+          <input type="search" placeholder="Search wireframes" />
+        </label>
+        <div class="edition">
+          <label for="theme-switch">Theme</label>
+          <select id="theme-switch" aria-label="Switch theme">
+            <option value="theme-pro" selected>Professional</option>
+            <option value="theme-radiant">Radiant</option>
+            <option value="theme-noir">After Hours</option>
+            <option value="theme-tropic">Neon Tropic</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main class="wireframes">
+      <section id="hackathons" class="wf-card">
+        <div class="wf-card__header">
+          <div>
+            <p class="intro__eyebrow">Epic</p>
+            <h1>Hackathons</h1>
+            <p class="intro__copy">
+              A discovery surface for upcoming hackathons with an interactive map, filters, and a gallery of featured projects.
+            </p>
+          </div>
+          <div class="wf-pill-row">
+            <button class="pill pill--ghost">Search hackathons…</button>
+            <div class="pill-group">
+              <button class="pill">Date</button>
+              <button class="pill">Location</button>
+              <button class="pill">Format</button>
+              <button class="pill">College</button>
+            </div>
+          </div>
+        </div>
+        <div class="wf-grid wf-grid--two">
+          <div class="wf-map" aria-label="Interactive map">
+            <div class="wf-map__pin" style="left: 22%; top: 30%"></div>
+            <div class="wf-map__pin" style="left: 48%; top: 40%"></div>
+            <div class="wf-map__pin" style="left: 68%; top: 26%"></div>
+            <div class="wf-map__pin" style="left: 40%; top: 62%"></div>
+            <div class="wf-map__legend">Live map pins</div>
+          </div>
+          <div class="wf-list">
+            <header class="wf-list__header">
+              <h2>Upcoming Hackathons</h2>
+              <span class="wf-badge">13 events</span>
+            </header>
+            <ul class="wf-tiles">
+              <li class="wf-tile">
+                <div>
+                  <p class="wf-tile__title">DevFest NYC</p>
+                  <p class="wf-tile__meta">New York • Mar 8–10</p>
+                </div>
+                <span class="wf-tag">Hybrid</span>
+              </li>
+              <li class="wf-tile">
+                <div>
+                  <p class="wf-tile__title">Hack the North</p>
+                  <p class="wf-tile__meta">Waterloo • Mar 14–16</p>
+                </div>
+                <span class="wf-tag">In person</span>
+              </li>
+              <li class="wf-tile">
+                <div>
+                  <p class="wf-tile__title">AI Builder Sprint</p>
+                  <p class="wf-tile__meta">Remote • Mar 21–23</p>
+                </div>
+                <span class="wf-tag">Online</span>
+              </li>
+              <li class="wf-tile">
+                <div>
+                  <p class="wf-tile__title">HackRPI</p>
+                  <p class="wf-tile__meta">Troy • Apr 4–6</p>
+                </div>
+                <span class="wf-tag">In person</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="wf-featured">
+          <div class="wf-featured__header">
+            <h3>Featured Hackathon Projects</h3>
+            <button class="btn">View More</button>
+          </div>
+          <div class="wf-grid wf-grid--four">
+            <article class="wf-card-mini">
+              <div class="wf-card-mini__thumb">AI Mentor</div>
+              <p class="wf-card-mini__title">Voice coach that adapts mid-pitch</p>
+            </article>
+            <article class="wf-card-mini">
+              <div class="wf-card-mini__thumb">Carbon IQ</div>
+              <p class="wf-card-mini__title">Realtime emissions insights for teams</p>
+            </article>
+            <article class="wf-card-mini">
+              <div class="wf-card-mini__thumb">Loop</div>
+              <p class="wf-card-mini__title">Collaborative music creation dashboard</p>
+            </article>
+            <article class="wf-card-mini">
+              <div class="wf-card-mini__thumb">MedLink</div>
+              <p class="wf-card-mini__title">Clinic triage built during Hack the North</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="profiles" class="wf-card">
+        <div class="wf-card__header">
+          <div>
+            <p class="intro__eyebrow">Epic</p>
+            <h1>User Profile</h1>
+            <p class="intro__copy">
+              A personal profile surface highlighting identity, skills, social links, hackathon badges, and recent projects.
+            </p>
+          </div>
+          <button class="btn">View Full Portfolio</button>
+        </div>
+        <div class="wf-profile">
+          <div class="wf-profile__header">
+            <div class="wf-avatar" aria-hidden="true">AL</div>
+            <div>
+              <h2>Alex Lee</h2>
+              <p class="wf-muted">Product Designer · NYC</p>
+              <p class="wf-bio">
+                Designer focused on building expressive AI tools for creatives. Previously at a YC-backed startup and currently
+                exploring multi-modal interaction models.
+              </p>
+            </div>
+          </div>
+          <div class="wf-profile__meta">
+            <div>
+              <h3 class="wf-label">Skills</h3>
+              <div class="wf-pill-row">
+                <span class="pill">JavaScript</span>
+                <span class="pill">React</span>
+                <span class="pill">C++</span>
+                <span class="pill">Figma</span>
+                <span class="pill">Storybook</span>
+              </div>
+            </div>
+            <div>
+              <h3 class="wf-label">Social</h3>
+              <div class="wf-social">
+                <a class="wf-social__btn" href="#" aria-label="LinkedIn">in</a>
+                <a class="wf-social__btn" href="#" aria-label="GitHub">GH</a>
+                <a class="wf-social__btn" href="#" aria-label="Figma">Fg</a>
+                <a class="wf-social__btn" href="#" aria-label="Portfolio">↗</a>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 class="wf-label">Hackathon Badges</h3>
+            <div class="wf-pill-row">
+              <span class="pill pill--badge">DevFest</span>
+              <span class="pill pill--badge">HackRPI</span>
+              <span class="pill pill--badge">TreeHacks</span>
+              <span class="pill pill--badge">HackMIT</span>
+            </div>
+          </div>
+          <div class="wf-profile__projects">
+            <h3 class="wf-label">Latest Projects</h3>
+            <div class="wf-grid wf-grid--two">
+              <article class="wf-card-mini">
+                <div class="wf-card-mini__thumb">Canvas AI</div>
+                <p class="wf-card-mini__title">Generating motion cues from hand-drawn frames</p>
+              </article>
+              <article class="wf-card-mini">
+                <div class="wf-card-mini__thumb">Signal</div>
+                <p class="wf-card-mini__title">An ambient dashboard for startup runway</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio" class="wf-card">
+        <div class="wf-card__header">
+          <div>
+            <p class="intro__eyebrow">Epic</p>
+            <h1>Portfolio</h1>
+            <p class="intro__copy">
+              A full showcase of projects with filters and a detail view for case studies and demo links.
+            </p>
+          </div>
+          <div class="wf-filters">
+            <label>
+              <span>Category</span>
+              <select>
+                <option>AI</option>
+                <option>Web</option>
+                <option>Mobile</option>
+                <option>VR</option>
+              </select>
+            </label>
+            <label>
+              <span>Year</span>
+              <select>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+              </select>
+            </label>
+            <label>
+              <span>Tech stack</span>
+              <select>
+                <option>React</option>
+                <option>Next.js</option>
+                <option>OpenAI</option>
+                <option>Flutter</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="wf-grid wf-grid--three">
+          <article class="wf-card-mini">
+            <div class="wf-card-mini__thumb">Glide</div>
+            <p class="wf-card-mini__title">AI trip planner with collaborative boards</p>
+            <p class="wf-tagline">Tags: React, OpenAI, Supabase</p>
+          </article>
+          <article class="wf-card-mini">
+            <div class="wf-card-mini__thumb">Sparks</div>
+            <p class="wf-card-mini__title">Realtime brainstorming with voice notes</p>
+            <p class="wf-tagline">Tags: Next.js, WebRTC</p>
+          </article>
+          <article class="wf-card-mini">
+            <div class="wf-card-mini__thumb">Voyager</div>
+            <p class="wf-card-mini__title">Immersive VR demo for museum tours</p>
+            <p class="wf-tagline">Tags: Unity, C#</p>
+          </article>
+          <article class="wf-card-mini">
+            <div class="wf-card-mini__thumb">Beacon</div>
+            <p class="wf-card-mini__title">Founder discovery feed built for Venn</p>
+            <p class="wf-tagline">Tags: React, TypeScript</p>
+          </article>
+          <article class="wf-card-mini">
+            <div class="wf-card-mini__thumb">Pulse</div>
+            <p class="wf-card-mini__title">Health signal tracker with wearable data</p>
+            <p class="wf-tagline">Tags: Flutter, Firebase</p>
+          </article>
+          <article class="wf-card-mini">
+            <div class="wf-card-mini__thumb">Atlas</div>
+            <p class="wf-card-mini__title">GIS explorer for climate risk reports</p>
+            <p class="wf-tagline">Tags: Mapbox, D3</p>
+          </article>
+        </div>
+        <article class="wf-detail">
+          <div class="wf-detail__media">Case study detail</div>
+          <div class="wf-detail__body">
+            <p class="wf-label">Project detail view</p>
+            <h2>Glide · Built at HackMIT</h2>
+            <p class="wf-muted">
+              Tackles travel planning clutter by combining AI-curated routes with collaborative boards, allowing friends to plan
+              flights, stays, and activities together.
+            </p>
+            <ul class="wf-detail__list">
+              <li><strong>Problem:</strong> Fragmented itineraries and messy group chats</li>
+              <li><strong>Solution:</strong> AI-generated templates, drag-and-drop boards, and smart reminders</li>
+            </ul>
+            <div class="wf-detail__links">
+              <a class="btn" href="#">GitHub</a>
+              <a class="btn" href="#">Figma</a>
+              <a class="btn" href="#">Demo video</a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const themeSwitch = document.getElementById('theme-switch');
+      themeSwitch?.addEventListener('change', (e) => {
+        document.body.className = (e.target?.value || 'theme-pro').toString();
+      });
+    </script>
+  </body>
+</html>
